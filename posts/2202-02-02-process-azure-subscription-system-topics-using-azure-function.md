@@ -46,3 +46,52 @@ public class ResourceEvent
     public string TenantId { get; set; }
 }
 ```
+
+### Testing the Azure Function
+
+The following url will send the event to the function `http://localhost:7071/runtime/webhooks/eventgrid?functionName=EventGridFunction`
+
+Headers:
+
+* `aeg-event-type : Notification`
+
+Below is an example request containing an Azure Subscriptin Event.
+
+```json
+[
+    {
+        "topic": "/subscriptions/{subscriptionId}",
+        "subject": "/subscriptions/{subscriptionId}/resourceGroups/event-trigger",
+        "eventType": "Microsoft.Resources.ResourceWriteSuccess",
+        "eventTime": "2022-02-02T17:02:19.6069787Z",
+        "id": "{guid}",
+        "data": {
+            "authorization": {
+                "scope": "/subscriptions/{subscriptionId}/resourceGroups/event-trigger",
+                "action": "Microsoft.Resources/subscriptions/resourceGroups/write",
+                "evidence": {
+                    "role": "Subscription Admin"
+                }
+            },
+            "claims": {
+                "keys": "......"
+            },
+            "correlationId": "787ff406-9ae9-4f47-8349-1a976134e65e",
+            "httpRequest": {
+                "clientRequestId": "738102a5-8cb0-4b66-918f-18ab5e60305a",
+                "clientIpAddress": "143.178.104.18",
+                "method": "PUT",
+                "url": "https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/event-trigger?api-version=2014-04-01-preview"
+            },
+            "resourceProvider": "Microsoft.Resources",
+            "resourceUri": "/subscriptions/{subscriptionId}/resourceGroups/event-trigger",
+            "operationName": "Microsoft.Resources/subscriptions/resourceGroups/write",
+            "status": "Succeeded",
+            "subscriptionId": "{subscriptionId}",
+            "tenantId": "{tenantId}"
+        },
+        "dataVersion": "",
+        "metadataVersion": "1"
+    }
+]
+```
