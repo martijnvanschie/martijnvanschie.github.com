@@ -1,11 +1,13 @@
 ---
-Author: Martijn van Schie
-Date: 02-02-2022
+author: Martijn van Schie
+date: 02-02-2022
 ---
 
-# Februari 2022
+# Martijn van Schie | Azure Tips and Tricks
 
-## [Process Azure Subscription System Topics using Azure Function](/posts/2202-02-02-process-azure-subscription-system-topics-using-azure-function.md)
+## Februari 2022
+
+### [Process Azure Subscription System Topics using Azure Function](/posts/2202-02-02-process-azure-subscription-system-topics-using-azure-function.md)
 
 #### Februari 2nd 2022 | Martijn van Schie
 

@@ -1,10 +1,12 @@
 ---
-Author: Martijn van Schie
-Date: 02-02-2022
-Tags: azure, azure-functions, event-grid, csharp, dotnet
+author: Martijn van Schie
+date: 02-02-2022
+tags: azure, azure-functions, event-grid, csharp, dotnet
 ---
 
 # Process Azure Subscription System Topics using Azure Function
+
+[Home](/index.md)
 
 ## Introduction
 
