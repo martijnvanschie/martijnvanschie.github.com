@@ -1,37 +1,40 @@
-## Welcome to GitHub Pages
+# Process Azure Subscription System Topics using Azure Function
 
-You can use the [editor on GitHub](https://github.com/martijnvanschie/martijnvanschie.github.com/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
+## Introduction
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+We can use Azure Functions to as event handlers for Event Grid events. The basic implementation is very easy but when you want to handle system events you have to do some manual work to get it to work.
 
-### Markdown
+This blog will guide you through the steps on how to create an Azure Function that handles Event Grid System Topic.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### The Azure Function
 
-```markdown
-Syntax highlighted code block
+This is what the content of the function looks like.
 
-# Header 1
-## Header 2
-### Header 3
+```csharp
+[FunctionName("EventGridFunction")]
+public void Run([EventGridTrigger] EventGridEvent e)
+{
+    _logger.LogInformation("Event Type:  {type}", e.EventType);
+    _logger.LogInformation("Event subject: {subject}", e.Subject);
+    _logger.LogInformation("Event topic: {topic}", e.Topic);
+    _logger.LogInformation("Event content: {content}", e.Data);
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+    var evnt = e.Data.ToObjectFromJson<ResourceEvent>(_options);
+}
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+### Resource Event Grid
 
-### Jekyll Themes
+The event grid event passed as an argument has an untyped data property. To get a typed object we make us of the helper function `ToObjectFromJson()`. This will parse the Data property into a custom class. It uses the classed and methods from the `System.Text.Json` namespace so we can use classes like `JsonSerializerOptions()` to control the serialization of the JSON.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/martijnvanschie/martijnvanschie.github.com/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+```csharp
+public class ResourceEvent
+{
+    public string ResourceProvider { get; set; }
+    public string ResourceUri { get; set; }
+    public string OperationName { get; set; }
+    public string Status { get; set; }
+    public string SubscriptionId { get; set; }
+    public string TenantId { get; set; }
+}
+```
