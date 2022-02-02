@@ -6,7 +6,7 @@ tags: azure, azure-functions, event-grid, csharp, dotnet
 
 # Process Azure Subscription System Topics using Azure Function
 
-[Home](/index.md)
+[Home](https://martijnvanschie.github.io/)
 
 ## Introduction
 
