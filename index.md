@@ -3,43 +3,11 @@ Author: Martijn van Schie
 Date: 02-02-2022
 ---
 
-# Process Azure Subscription System Topics using Azure Function
+# Februari 2022
 
-## Introduction
+## [Process Azure Subscription System Topics using Azure Function](/posts/2202-02-02-process-azure-subscription-system-topics-using-azure-function.md)
+
+#### Februari 2nd 2022 | Martijn van Schie
 
 We can use Azure Functions to as event handlers for Event Grid events. The basic implementation is very easy but when you want to handle system events you have to do some manual work to get it to work.
 
-This blog will guide you through the steps on how to create an Azure Function that handles Event Grid System Topic.
-
-### The Azure Function
-
-This is what the content of the function looks like.
-
-```csharp
-[FunctionName("EventGridFunction")]
-public void Run([EventGridTrigger] EventGridEvent e)
-{
-    _logger.LogInformation("Event Type:  {type}", e.EventType);
-    _logger.LogInformation("Event subject: {subject}", e.Subject);
-    _logger.LogInformation("Event topic: {topic}", e.Topic);
-    _logger.LogInformation("Event content: {content}", e.Data);
-
-    var evnt = e.Data.ToObjectFromJson<ResourceEvent>(_options);
-}
-```
-
-### Resource Event Grid
-
-The event grid event passed as an argument has an untyped data property. To get a typed object we make us of the helper function `ToObjectFromJson()`. This will parse the Data property into a custom class. It uses the classed and methods from the `System.Text.Json` namespace so we can use classes like `JsonSerializerOptions()` to control the serialization of the JSON.
-
-```csharp
-public class ResourceEvent
-{
-    public string ResourceProvider { get; set; }
-    public string ResourceUri { get; set; }
-    public string OperationName { get; set; }
-    public string Status { get; set; }
-    public string SubscriptionId { get; set; }
-    public string TenantId { get; set; }
-}
-```
